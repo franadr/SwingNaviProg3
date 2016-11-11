@@ -35,8 +35,7 @@ public class Main {
         JPanel boatPanel = new JPanel();
         JPanel commandPanel = new JPanel();
 
-        JButton b1 = new JButton();
-        JButton b2 = new JButton();
+      
 
         BoatPanel bp = new BoatPanel();
         
