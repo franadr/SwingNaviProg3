@@ -13,7 +13,12 @@ import javax.swing.event.ChangeListener;
 
 public class Main {
 	static float REFRESH_RATE=60;
-	static int LINE_SPEED=1;
+	static int BOAT_SPEED=1;
+	static int BOAT_ANGLE = 90;
+	static int WINDOWS_SIZE_X=1000;
+	static int WINDOWS_SIZE_Y=600;
+	static int MAX_SPEED=10;
+	static int MAX_ANGLE=360;
 	public static void main(String[] args){
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
             @Override
@@ -52,15 +57,15 @@ public class Main {
         JPanel speedIndicatorPanel = new JPanel();
         JPanel sliderPb = new JPanel();
         speedIndicatorPanel.setLayout(new BorderLayout());
-        JSlider speedSlider = new JSlider(JSlider.VERTICAL, 0, 30,1 );
-        JProgressBar speedIndicator = new JProgressBar(JProgressBar.VERTICAL, 0, 30);
+        JSlider speedSlider = new JSlider(JSlider.VERTICAL, 0, MAX_SPEED,1 );
+        JProgressBar speedIndicator = new JProgressBar(JProgressBar.VERTICAL, 0, MAX_SPEED);
         sliderPb.add(speedSlider);
         sliderPb.add(speedIndicator);
         speedIndicatorPanel.add(sliderPb,BorderLayout.WEST);
         
         
         //Angle slider
-        JSlider angleSlider = new JSlider(0, 180, 90);
+        JSlider angleSlider = new JSlider(0, MAX_ANGLE, MAX_ANGLE/2);
         
         
         //speedPanel
@@ -110,7 +115,7 @@ public class Main {
 				int speedSliderValue = speedSlider.getValue();
 				speedIndicator.setValue(speedSliderValue);
 				speedField.setText(Integer.toString(speedSliderValue));
-				Main.LINE_SPEED=speedSliderValue;
+				Main.BOAT_SPEED=speedSliderValue;
 				
 				
 			}
@@ -121,12 +126,13 @@ public class Main {
 			@Override
 			public void stateChanged(ChangeEvent e) {
 				angleField.setText(Integer.toString(angleSlider.getValue()));
+				bp.ANGLE=angleSlider.getValue();
 				
 			}
 		});
 
-        frame.setMaximumSize(new Dimension(500, 300));
-        frame.setMinimumSize(new Dimension(500, 300));
+        frame.setMaximumSize(new Dimension(WINDOWS_SIZE_X, WINDOWS_SIZE_Y));
+        frame.setMinimumSize(new Dimension(WINDOWS_SIZE_X, WINDOWS_SIZE_Y));
         frame.pack();
         frame.setVisible(true);
         
@@ -137,8 +143,8 @@ public class Main {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					// TODO Auto-generated method stub
-					bp.h=500/5*Main.LINE_SPEED/50;
-		        	
+					bp.h=bp.getHeight()/5*Main.BOAT_SPEED/50;
+					bp.v = bp.getWidth()/5*Main.BOAT_SPEED/50;
 		        	bp.repaint();
 		        	
 				}
