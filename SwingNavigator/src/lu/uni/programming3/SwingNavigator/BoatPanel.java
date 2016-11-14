@@ -2,13 +2,15 @@ package lu.uni.programming3.SwingNavigator;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+ 
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Line2D;
+import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
 public class BoatPanel extends JPanel {
@@ -16,7 +18,11 @@ public class BoatPanel extends JPanel {
 	float H_LINE_OFFSET = 0;
 	float N_VLINES=4;
 	float N_HLINES = 4;
-	double ANGLE=90;
+	double ANGLE_DEG=Main.MAX_ANGLE/2;
+	double ANGLE_RAD = 0;
+	
+	double IMG_RESIZE_X=0.1;
+	double IMG_RESIZE_Y=0.1;
 	
 	float h=0;
 	float v=0;
@@ -35,10 +41,11 @@ public class BoatPanel extends JPanel {
 	public void paint(Graphics g) {
         super.paint(g);  
         Graphics2D g2 = (Graphics2D) g;
-        	
-        	//V and H factor calculation depending on angle
-        	double factor_V = Math.sin(Math.toRadians(ANGLE));
-        	double factor_H = Math.cos(Math.toRadians(ANGLE));
+        	ANGLE_RAD= Math.toRadians(ANGLE_DEG);
+        
+        	//V and H factor calculation depending on ANGLE_DEG
+        	double factor_V = Math.sin(ANGLE_RAD);
+        	double factor_H = Math.cos(ANGLE_RAD);
         	
         	
         	
@@ -67,9 +74,26 @@ public class BoatPanel extends JPanel {
         		j++;
         	}
         	
+        	//Definition of image placement , will depends on img size factor
+        	int image_x = (int) ((this.getWidth()-image.getWidth()/(1/IMG_RESIZE_X))/2);
+        	int image_y = (int) ((this.getHeight()-image.getHeight()/(1/IMG_RESIZE_Y))/2);
+        	
+        	//Definition of rotation center points x y , which are absolute in the panel
+        	int rotation_x = (int) (image.getWidth()/(2/IMG_RESIZE_X));
+        	int rotation_y = (int) (image.getHeight()/(2/IMG_RESIZE_Y));
+        			
+        	
+        	//First transform executes rotation, second resizes
+        	AffineTransform tx = AffineTransform.getRotateInstance(Math.toRadians(ANGLE_DEG-180),rotation_x,rotation_y);
+        	tx.scale(IMG_RESIZE_X, IMG_RESIZE_Y);
+        	
+        	//Assign tx to linear mapping 
+        	AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_BILINEAR);
+        	
+        	//Apply transform to original image, and draw it
+        	g2.drawImage(op.filter(image, null) , image_x,image_y,null);
         	
         	
-        	g2.drawImage(image , this.getWidth()-image.getWidth(),this.getHeight()-image.getHeight(),null);
     }
 }
 

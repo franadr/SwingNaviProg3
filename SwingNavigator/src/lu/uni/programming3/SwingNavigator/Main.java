@@ -3,8 +3,14 @@ package lu.uni.programming3.SwingNavigator;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -17,7 +23,7 @@ public class Main {
 	static int BOAT_ANGLE = 90;
 	static int WINDOWS_SIZE_X=1000;
 	static int WINDOWS_SIZE_Y=600;
-	static int MAX_SPEED=10;
+	static int MAX_SPEED=20;
 	static int MAX_ANGLE=360;
 	public static void main(String[] args){
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
@@ -33,6 +39,8 @@ public class Main {
 	
 	
 	private static void CreatAndShowMainLayout(){
+		BufferedImage warningSign;
+		
         JFrame frame = new JFrame("Navigator");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
@@ -51,6 +59,11 @@ public class Main {
         JPanel manualInputPanel = new JPanel();
         manualInputPanel.setLayout(new BoxLayout(manualInputPanel, BoxLayout.Y_AXIS));
         
+      //Warning label
+        ImageIcon warning = new ImageIcon(new ImageIcon("warning.png").getImage().getScaledInstance(90,70, Image.SCALE_DEFAULT));
+        JLabel warningLabel = new JLabel();
+        warningLabel.setIcon(warning);
+        warningLabel.setVisible(false);
         
         //Speed slider and indicator panel
         
@@ -61,7 +74,9 @@ public class Main {
         JProgressBar speedIndicator = new JProgressBar(JProgressBar.VERTICAL, 0, MAX_SPEED);
         sliderPb.add(speedSlider);
         sliderPb.add(speedIndicator);
+        sliderPb.add(warningLabel);
         speedIndicatorPanel.add(sliderPb,BorderLayout.WEST);
+        
         
         
         //Angle slider
@@ -70,9 +85,12 @@ public class Main {
         
         //speedPanel
         JPanel speedInput = new JPanel(new FlowLayout());
-        //speedInput.setLayout(new BoxLayout(speedInput, BoxLayout.LINE_AXIS));
+        
         //angle panel
         JPanel angleIn = new JPanel(new FlowLayout());
+        
+        
+        
         
         
         
@@ -126,7 +144,7 @@ public class Main {
 			@Override
 			public void stateChanged(ChangeEvent e) {
 				angleField.setText(Integer.toString(angleSlider.getValue()));
-				bp.ANGLE=angleSlider.getValue();
+				bp.ANGLE_DEG=angleSlider.getValue();
 				
 			}
 		});
@@ -137,7 +155,7 @@ public class Main {
         frame.setVisible(true);
         
         
-        	
+        
         	Timer t  = new Timer((int)REFRESH_RATE,new ActionListener() {
 				
 				@Override
@@ -146,6 +164,10 @@ public class Main {
 					bp.h=bp.getHeight()/5*Main.BOAT_SPEED/50;
 					bp.v = bp.getWidth()/5*Main.BOAT_SPEED/50;
 		        	bp.repaint();
+		        	if(BOAT_SPEED >=MAX_SPEED-2)
+		        		warningLabel.setVisible(true);
+		        	else 
+		        		warningLabel.setVisible(false);
 		        	
 				}
 			} );
