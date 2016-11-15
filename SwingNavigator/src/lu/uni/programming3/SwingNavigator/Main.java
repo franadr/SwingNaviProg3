@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Graphics2D;
+import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
@@ -19,6 +20,7 @@ import javax.swing.event.ChangeListener;
 
 public class Main {
 	static float REFRESH_RATE=60;
+	static float REFRESH_RATE_2=500;
 	static int BOAT_SPEED=1;
 	static int BOAT_ANGLE = 90;
 	static int WINDOWS_SIZE_X=1000;
@@ -27,6 +29,7 @@ public class Main {
 	static int MAX_ANGLE=360;
 	static int AUTO_ROTATION_ANGLE=0;
 	static double ACTION_FLAG=0;
+	static int ROTATION_TYPE=0;
 	
 	public static void main(String[] args){
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
@@ -112,64 +115,32 @@ public class Main {
         angleIn.add(angle);
         angleIn.add(angleField);
         
+        //Auto rotation rectangle button
+        JButton select_circle = new JButton("Auto Circles");
+        JButton select_rectangle = new JButton("Auto rectangles");
         
-        JButton select_circle = new JButton("circle");
-        JButton stop_form = new JButton("stop rotation");
-        Timer t2 = new Timer((int)20, new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if(AUTO_ROTATION_ANGLE>=360)
-					AUTO_ROTATION_ANGLE=0;
-				
-				AUTO_ROTATION_ANGLE+=1;
-				
-				angleSlider.setValue(AUTO_ROTATION_ANGLE);
-				
-			}
-		});
+        //Special features panel
+        JPanel specialFeaturesPanel = new JPanel();
+        specialFeaturesPanel.setLayout(new GridLayout(3, 3));
+        specialFeaturesPanel.add(select_circle);
+        specialFeaturesPanel.add(select_rectangle);
         
-        
-        select_circle.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				
-				if(ACTION_FLAG/2 == (int)((ACTION_FLAG/2))){
-					t2.start();
-					select_circle.setText("Stop");
-				}
-				
-				else{
-					select_circle.setText("Circle");
-					t2.stop();
-				}
-				
-				
-				ACTION_FLAG+=1;
-				
-			}
-		});
-        
-        
-        
-       
+
         
         //commandPanel build
         commandPanel.add(speedInput);
         commandPanel.add(angleIn);
         commandPanel.add(speedIndicatorPanel);
-        commandPanel.add(select_circle);
+        commandPanel.add(specialFeaturesPanel);
         commandPanel.add(angleSlider);
         frame.add(bp, BorderLayout.CENTER);
         frame.add(commandPanel,BorderLayout.EAST);
         
-        
-        
 
+/*---------------------------------Program dynamics----------------------------------------------------------------------*/
         
-
-        //Program dynamics
+        
+        //SpeedSLider listener changes indicated speed and static value of BOAT_SPEED
         speedSlider.addChangeListener(new ChangeListener() {
 			
 			@Override
@@ -183,6 +154,7 @@ public class Main {
 			}
 		});
         
+        //Angle slide listener changes Boat panel static ANGLE_DEG value 
         angleSlider.addChangeListener(new ChangeListener() {
 			
 			@Override
@@ -193,14 +165,8 @@ public class Main {
 			}
 		});
 
-        frame.setMaximumSize(new Dimension(WINDOWS_SIZE_X, WINDOWS_SIZE_Y));
-        frame.setMinimumSize(new Dimension(WINDOWS_SIZE_X, WINDOWS_SIZE_Y));
-        frame.pack();
-        frame.setVisible(true);
-        
-        
-        
-        	Timer t  = new Timer((int)REFRESH_RATE,new ActionListener() {
+        //Redraw Boat panel timer
+        	Timer drawLinesTimer  = new Timer((int)REFRESH_RATE,new ActionListener() {
 				
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -216,12 +182,102 @@ public class Main {
 				}
 			} );
         	
-        	t.start();
-        
-        
+        	drawLinesTimer.start();
         	
-        
+        	//Auto rotation dynamics
+            Timer modelRotationTimer = new Timer((int)REFRESH_RATE_2, new ActionListener() {
+    			
+    			@Override
+    			public void actionPerformed(ActionEvent e) {
+    				if(AUTO_ROTATION_ANGLE>=360)
+    					AUTO_ROTATION_ANGLE=0;
+    				
+    				if(speedSlider.getValue() >0)
+    				switch (ROTATION_TYPE) {
+					case 0:
+						
+						AUTO_ROTATION_ANGLE+=1;
+						
+						break;
+					case 1:
+						
+						AUTO_ROTATION_ANGLE+=90;
+					default:
+						break;
+					}
+    				
+    				
+    				angleSlider.setValue(AUTO_ROTATION_ANGLE);
+    				
+    			}
+    		});
+            
+        	//Auto circle listener
+            select_circle.addActionListener(new ActionListener() {	
+    			@Override
+    			public void actionPerformed(ActionEvent e) {
+    				
+    				
+    				//If ACTION_FLAG is even it means that we clicked 1  or  2*n+1 times then Start option needs to be showed
+    				ROTATION_TYPE=0;
+    				REFRESH_RATE_2=20;
+    				if(ACTION_FLAG/2 == (int)((ACTION_FLAG/2))){
+    					
+    					modelRotationTimer.start();
+    					select_rectangle.setEnabled(false);
+    					select_circle.setText("Stop");
+    					AUTO_ROTATION_ANGLE = angleSlider.getValue();
+    					angleField.setEnabled(false);
+    				}
+    				
+    				else{
+    					select_circle.setText("Auto Circles");
+    					modelRotationTimer.stop();
+    					angleField.setEnabled(true);
+    					select_rectangle.setEnabled(true);
+    				}
+
+    				ACTION_FLAG+=1;
+    				
+    			}
+    		});
+            
+            //Auto rectangle Listener
+            select_rectangle.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					//If ACTION_FLAG is even it means that we clicked 1  or  2*n+1 times then Start option needs to be showed
+					ROTATION_TYPE=1;
+					REFRESH_RATE_2=500;
+    				if(ACTION_FLAG/2 == (int)((ACTION_FLAG/2))){
+    					
+    					modelRotationTimer.start();
+    					select_circle.setEnabled(false);
+    					select_rectangle.setText("Stop");
+    					AUTO_ROTATION_ANGLE = angleSlider.getValue();
+    					angleField.setEnabled(false);
+    				}
+    				
+    				else{
+    					select_rectangle.setText("Auto Rectangles");
+    					modelRotationTimer.stop();
+    					angleField.setEnabled(true);
+    					select_circle.setEnabled(true);
+    				}
+
+    				ACTION_FLAG+=1;
+					
+				}
+			});
+            
+            frame.setMaximumSize(new Dimension(WINDOWS_SIZE_X, WINDOWS_SIZE_Y));
+            frame.setMinimumSize(new Dimension(WINDOWS_SIZE_X, WINDOWS_SIZE_Y));
+            frame.pack();
+            frame.setVisible(true);
     }
+	
+	
 
     
 	
