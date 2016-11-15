@@ -25,6 +25,9 @@ public class Main {
 	static int WINDOWS_SIZE_Y=600;
 	static int MAX_SPEED=20;
 	static int MAX_ANGLE=360;
+	static int AUTO_ROTATION_ANGLE=0;
+	static double ACTION_FLAG=0;
+	
 	public static void main(String[] args){
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
             @Override
@@ -59,14 +62,13 @@ public class Main {
         JPanel manualInputPanel = new JPanel();
         manualInputPanel.setLayout(new BoxLayout(manualInputPanel, BoxLayout.Y_AXIS));
         
-      //Warning label
+        //Warning label
         ImageIcon warning = new ImageIcon(new ImageIcon("warning.png").getImage().getScaledInstance(90,70, Image.SCALE_DEFAULT));
         JLabel warningLabel = new JLabel();
         warningLabel.setIcon(warning);
         warningLabel.setVisible(false);
         
         //Speed slider and indicator panel
-        
         JPanel speedIndicatorPanel = new JPanel();
         JPanel sliderPb = new JPanel();
         speedIndicatorPanel.setLayout(new BorderLayout());
@@ -110,12 +112,54 @@ public class Main {
         angleIn.add(angle);
         angleIn.add(angleField);
         
-      
+        
+        JButton select_circle = new JButton("circle");
+        JButton stop_form = new JButton("stop rotation");
+        Timer t2 = new Timer((int)20, new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(AUTO_ROTATION_ANGLE>=360)
+					AUTO_ROTATION_ANGLE=0;
+				
+				AUTO_ROTATION_ANGLE+=1;
+				
+				angleSlider.setValue(AUTO_ROTATION_ANGLE);
+				
+			}
+		});
+        
+        
+        select_circle.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				if(ACTION_FLAG/2 == (int)((ACTION_FLAG/2))){
+					t2.start();
+					select_circle.setText("Stop");
+				}
+				
+				else{
+					select_circle.setText("Circle");
+					t2.stop();
+				}
+				
+				
+				ACTION_FLAG+=1;
+				
+			}
+		});
+        
+        
+        
+       
         
         //commandPanel build
         commandPanel.add(speedInput);
         commandPanel.add(angleIn);
         commandPanel.add(speedIndicatorPanel);
+        commandPanel.add(select_circle);
         commandPanel.add(angleSlider);
         frame.add(bp, BorderLayout.CENTER);
         frame.add(commandPanel,BorderLayout.EAST);

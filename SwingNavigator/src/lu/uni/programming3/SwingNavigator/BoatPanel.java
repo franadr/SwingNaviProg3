@@ -78,7 +78,7 @@ public class BoatPanel extends JPanel {
         	int image_x = (int) ((this.getWidth()-image.getWidth()/(1/IMG_RESIZE_X))/2);
         	int image_y = (int) ((this.getHeight()-image.getHeight()/(1/IMG_RESIZE_Y))/2);
         	
-        	//Definition of rotation center points x y , which are absolute in the panel
+        	//Definition of rotation center points x y , which are absolute value in the panel
         	int rotation_x = (int) (image.getWidth()/(2/IMG_RESIZE_X));
         	int rotation_y = (int) (image.getHeight()/(2/IMG_RESIZE_Y));
         			
