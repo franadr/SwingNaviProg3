@@ -77,6 +77,7 @@ public class Main{
         JPanel sliderPb = new JPanel();
         speedIndicatorPanel.setLayout(new BorderLayout());
         JSlider speedSlider = new JSlider(JSlider.VERTICAL, 0, MAX_SPEED,1 );
+        speedSlider.setFocusable(false); //set to false so it doesnt mess up with main key bindings
         JProgressBar speedIndicator = new JProgressBar(JProgressBar.VERTICAL, 0, MAX_SPEED);
         sliderPb.add(speedSlider);
         sliderPb.add(speedIndicator);
@@ -87,6 +88,7 @@ public class Main{
         
         //Angle slider
         JSlider angleSlider = new JSlider(0, MAX_ANGLE, MAX_ANGLE/2);
+        angleSlider.setFocusable(false); //set to false so it doesnt mess up with main key bindings
         
         
         //speedPanel
@@ -112,7 +114,7 @@ public class Main{
         //Manual Angle inputs fields
         JLabel angle = new JLabel("Angle input");
         JTextField angleField = new JTextField("0°");
-        angleField.setFocusable(false);
+        angleField.setFocusable(true);
         angleField.setPreferredSize(new Dimension(100, 20));
         angleField.setMaximumSize(new Dimension(100, 20));
         angleIn.add(angle);
@@ -121,6 +123,8 @@ public class Main{
         //Auto rotation rectangle button
         JButton select_circle = new JButton("Auto Circles");
         JButton select_rectangle = new JButton("Auto rectangles");
+        select_circle.setFocusable(false);
+        select_rectangle.setFocusable(false);
         
         //Special features panel
         JPanel specialFeaturesPanel = new JPanel();
@@ -136,6 +140,8 @@ public class Main{
         commandPanel.add(speedIndicatorPanel);
         commandPanel.add(specialFeaturesPanel);
         commandPanel.add(angleSlider);
+        commandPanel.setFocusable(true);
+       
         frame.add(bp, BorderLayout.CENTER);
         frame.add(commandPanel,BorderLayout.EAST);
         
@@ -156,27 +162,75 @@ public class Main{
 				
 			}
 		});
+      
+        //Key binding for the arrow keys
+        commandPanel.getInputMap().put(KeyStroke.getKeyStroke("UP"), "speedUp");
+        commandPanel.getActionMap().put("speedUp",new AbstractAction() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(speedSlider.getValue() <= MAX_SPEED)
+				speedSlider.setValue(speedSlider.getValue()+1);
+				
+			}
+		});
+        commandPanel.getInputMap().put(KeyStroke.getKeyStroke("DOWN"), "speedDown");
+        commandPanel.getActionMap().put("speedDown",new AbstractAction() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(speedSlider.getValue() >= 0)
+				speedSlider.setValue(speedSlider.getValue()-1);
+				
+			}
+		});
         
-        speedSlider.addKeyListener(new KeyAdapter(){
-        	public void keyPressed(KeyEvent e) {
-
-        	    int key = e.getKeyCode();
-        	    int speed = speedSlider.getValue();
-
-        	    if (key == KeyEvent.VK_UP) {
-        	        if(speed != MAX_SPEED)
-        	        	speedSlider.setValue(speed + 1);
-        	        System.out.println(speed);
-        	    }
-
-        	    if (key == KeyEvent.VK_DOWN) {
-        	        if(speed != 0)
-        	        	speedSlider.setValue(speed - 1);
-        	    }
-        	    
-        	}
-        	
-        		});
+        commandPanel.getInputMap().put(KeyStroke.getKeyStroke("LEFT"), "angleMin");
+        commandPanel.getActionMap().put("angleMin",new AbstractAction() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(angleSlider.getValue() == 0){
+				angleSlider.setValue(MAX_ANGLE);
+				}
+				angleSlider.setValue(angleSlider.getValue()-10);
+			}
+		});
+        
+        commandPanel.getInputMap().put(KeyStroke.getKeyStroke("RIGHT"), "anglePlus");
+        commandPanel.getActionMap().put("anglePlus",new AbstractAction() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(angleSlider.getValue() > MAX_ANGLE){
+				angleSlider.setValue(0);
+				}
+				angleSlider.setValue(angleSlider.getValue()+10);
+			}
+		});
+        
+//        speedSlider.addKeyListener(new KeyAdapter(){
+//        	public void keyPressed(KeyEvent e) {
+//
+//        	    int key = e.getKeyCode();
+//        	    int speed = speedSlider.getValue();
+//
+//        	    if (key == KeyEvent.VK_UP) {
+//        	        if(speed != MAX_SPEED)
+//        	        	speedSlider.setValue(speed + 1);
+//        	        System.out.println(speed);
+//        	    }
+//
+//        	    if (key == KeyEvent.VK_DOWN) {
+//        	        if(speed != 0)
+//        	        	speedSlider.setValue(speed - 1);
+//        	    }
+//        	    
+//        	    System.out.println(key);
+//        	    
+//        	}
+//        	
+//        		});
         
         //Angle slide listener changes Boat panel static ANGLE_DEG value 
         angleSlider.addChangeListener(new ChangeListener() {
@@ -189,25 +243,25 @@ public class Main{
 			}
 		});
         
-        angleSlider.addKeyListener(new KeyAdapter(){
-        	public void keyPressed(KeyEvent e) {
-
-        	    int key = e.getKeyCode();
-        	    int angle = angleSlider.getValue();
-
-        	    if (key == KeyEvent.VK_RIGHT) {
-        	        if(angle != MAX_ANGLE)
-        	        	angleSlider.setValue(angle + 1);
-        	    }
-
-        	    if (key == KeyEvent.VK_LEFT) {
-        	        if(angle != 0)
-        	        	angleSlider.setValue(angle - 1);
-        	    }
-        	    
-        	}
-        	
-        		});
+//        angleSlider.addKeyListener(new KeyAdapter(){
+//        	public void keyPressed(KeyEvent e) {
+//
+//        	    int key = e.getKeyCode();
+//        	    int angle = angleSlider.getValue();
+//
+//        	    if (key == KeyEvent.VK_RIGHT) {
+//        	        if(angle != MAX_ANGLE)
+//        	        	angleSlider.setValue(angle + 1);
+//        	    }
+//
+//        	    if (key == KeyEvent.VK_LEFT) {
+//        	        if(angle != 0)
+//        	        	angleSlider.setValue(angle - 1);
+//        	    }
+//        	    
+//        	}
+//        	
+//        		});
 
         //Redraw Boat panel timer
         	Timer drawLinesTimer  = new Timer((int)REFRESH_RATE,new ActionListener() {
@@ -319,5 +373,6 @@ public class Main{
             frame.setMinimumSize(new Dimension(WINDOWS_SIZE_X, WINDOWS_SIZE_Y));
             frame.pack();
             frame.setVisible(true);
+            commandPanel.requestFocusInWindow(); //needed so command panel containing sliders is focus at initialization 
     }
 }
