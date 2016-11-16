@@ -18,7 +18,7 @@ import javax.swing.event.ChangeListener;
 
 
 
-public class Main implements KeyListener{
+public class Main{
 	static float REFRESH_RATE=60;
 	static float REFRESH_RATE_2=500;
 	static int BOAT_SPEED=1;
@@ -77,7 +77,6 @@ public class Main implements KeyListener{
         JPanel sliderPb = new JPanel();
         speedIndicatorPanel.setLayout(new BorderLayout());
         JSlider speedSlider = new JSlider(JSlider.VERTICAL, 0, MAX_SPEED,1 );
-        speedSlider.setFocusable(false);
         JProgressBar speedIndicator = new JProgressBar(JProgressBar.VERTICAL, 0, MAX_SPEED);
         sliderPb.add(speedSlider);
         sliderPb.add(speedIndicator);
@@ -88,7 +87,6 @@ public class Main implements KeyListener{
         
         //Angle slider
         JSlider angleSlider = new JSlider(0, MAX_ANGLE, MAX_ANGLE/2);
-        angleSlider.setFocusable(false);
         
         
         //speedPanel
@@ -159,6 +157,27 @@ public class Main implements KeyListener{
 			}
 		});
         
+        speedSlider.addKeyListener(new KeyAdapter(){
+        	public void keyPressed(KeyEvent e) {
+
+        	    int key = e.getKeyCode();
+        	    int speed = speedSlider.getValue();
+
+        	    if (key == KeyEvent.VK_UP) {
+        	        if(speed != MAX_SPEED)
+        	        	speedSlider.setValue(speed + 1);
+        	        System.out.println(speed);
+        	    }
+
+        	    if (key == KeyEvent.VK_DOWN) {
+        	        if(speed != 0)
+        	        	speedSlider.setValue(speed - 1);
+        	    }
+        	    
+        	}
+        	
+        		});
+        
         //Angle slide listener changes Boat panel static ANGLE_DEG value 
         angleSlider.addChangeListener(new ChangeListener() {
 			
@@ -169,6 +188,26 @@ public class Main implements KeyListener{
 				
 			}
 		});
+        
+        angleSlider.addKeyListener(new KeyAdapter(){
+        	public void keyPressed(KeyEvent e) {
+
+        	    int key = e.getKeyCode();
+        	    int angle = angleSlider.getValue();
+
+        	    if (key == KeyEvent.VK_RIGHT) {
+        	        if(angle != MAX_ANGLE)
+        	        	angleSlider.setValue(angle + 1);
+        	    }
+
+        	    if (key == KeyEvent.VK_LEFT) {
+        	        if(angle != 0)
+        	        	angleSlider.setValue(angle - 1);
+        	    }
+        	    
+        	}
+        	
+        		});
 
         //Redraw Boat panel timer
         	Timer drawLinesTimer  = new Timer((int)REFRESH_RATE,new ActionListener() {
@@ -281,51 +320,4 @@ public class Main implements KeyListener{
             frame.pack();
             frame.setVisible(true);
     }
-	
-	public void keyPressed(KeyEvent e) {
-
-	    int key = e.getKeyCode();
-
-	    if (key == KeyEvent.VK_LEFT) {
-	        if(BOAT_ANGLE != 0)
-	        	BOAT_ANGLE -= 1;
-	    }
-
-	    if (key == KeyEvent.VK_RIGHT) {
-	        if(BOAT_ANGLE != MAX_ANGLE)
-	        	BOAT_ANGLE += 1;
-	    }
-
-	    if (key == KeyEvent.VK_UP) {
-	        if(BOAT_SPEED != BOAT_SPEED)
-	        	BOAT_SPEED += 1;
-	    }
-
-	    if (key == KeyEvent.VK_DOWN) {
-	        if(BOAT_SPEED != 0)
-	        	BOAT_SPEED -= 1;
-	    }
-	    
-	}
-
-
-
-	@Override
-	public void keyReleased(KeyEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-
-	@Override
-	public void keyTyped(KeyEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	
-
-    
-	
 }
