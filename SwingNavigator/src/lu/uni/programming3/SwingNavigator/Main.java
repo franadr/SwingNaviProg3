@@ -18,7 +18,7 @@ import javax.swing.event.ChangeListener;
 
 
 
-public class Main {
+public class Main implements KeyListener{
 	static float REFRESH_RATE=60;
 	static float REFRESH_RATE_2=500;
 	static int BOAT_SPEED=1;
@@ -57,6 +57,7 @@ public class Main {
       
 
         BoatPanel bp = new BoatPanel();
+        bp.setFocusable(true);
         
 
         commandPanel.setLayout(new BoxLayout(commandPanel, BoxLayout.Y_AXIS));
@@ -76,6 +77,7 @@ public class Main {
         JPanel sliderPb = new JPanel();
         speedIndicatorPanel.setLayout(new BorderLayout());
         JSlider speedSlider = new JSlider(JSlider.VERTICAL, 0, MAX_SPEED,1 );
+        speedSlider.setFocusable(false);
         JProgressBar speedIndicator = new JProgressBar(JProgressBar.VERTICAL, 0, MAX_SPEED);
         sliderPb.add(speedSlider);
         sliderPb.add(speedIndicator);
@@ -86,6 +88,7 @@ public class Main {
         
         //Angle slider
         JSlider angleSlider = new JSlider(0, MAX_ANGLE, MAX_ANGLE/2);
+        angleSlider.setFocusable(false);
         
         
         //speedPanel
@@ -102,6 +105,7 @@ public class Main {
         //Manual Speed inputs fields
         JLabel speed = new JLabel("Speed input");
         JTextField speedField = new JTextField("0");
+        speedField.setFocusable(false);
         speedField.setPreferredSize(new Dimension(100, 20));
         speedField.setMaximumSize(new Dimension(100, 20));
         speedInput.add(speed);
@@ -110,6 +114,7 @@ public class Main {
         //Manual Angle inputs fields
         JLabel angle = new JLabel("Angle input");
         JTextField angleField = new JTextField("0°");
+        angleField.setFocusable(false);
         angleField.setPreferredSize(new Dimension(100, 20));
         angleField.setMaximumSize(new Dimension(100, 20));
         angleIn.add(angle);
@@ -276,6 +281,48 @@ public class Main {
             frame.pack();
             frame.setVisible(true);
     }
+	
+	public void keyPressed(KeyEvent e) {
+
+	    int key = e.getKeyCode();
+
+	    if (key == KeyEvent.VK_LEFT) {
+	        if(BOAT_ANGLE != 0)
+	        	BOAT_ANGLE -= 1;
+	    }
+
+	    if (key == KeyEvent.VK_RIGHT) {
+	        if(BOAT_ANGLE != MAX_ANGLE)
+	        	BOAT_ANGLE += 1;
+	    }
+
+	    if (key == KeyEvent.VK_UP) {
+	        if(BOAT_SPEED != BOAT_SPEED)
+	        	BOAT_SPEED += 1;
+	    }
+
+	    if (key == KeyEvent.VK_DOWN) {
+	        if(BOAT_SPEED != 0)
+	        	BOAT_SPEED -= 1;
+	    }
+	    
+	}
+
+
+
+	@Override
+	public void keyReleased(KeyEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	@Override
+	public void keyTyped(KeyEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 	
 
