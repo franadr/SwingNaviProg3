@@ -48,7 +48,6 @@ public class BoatPanel extends JPanel {
         	double factor_H = Math.cos(ANGLE_RAD);
         	
         	
-        	
         	//Offset resets conditions, to give impression of continuous line redrawing
         	if(V_LINE_OFFSET >= this.getHeight()/N_VLINES || V_LINE_OFFSET <= -(this.getHeight()/(N_VLINES)))
         		V_LINE_OFFSET=0;       	
@@ -92,8 +91,7 @@ public class BoatPanel extends JPanel {
         	
         	//Apply transform to original image, and draw it
         	g2.drawImage(op.filter(image, null) , image_x,image_y,null);
-        	
-        	
+        			
     }
 }
 

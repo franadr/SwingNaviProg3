@@ -169,7 +169,7 @@ public class Main{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if(speedSlider.getValue() <= MAX_SPEED)
+				if(speedSlider.getValue() < MAX_SPEED)
 				speedSlider.setValue(speedSlider.getValue()+1);
 				
 			}
@@ -179,7 +179,7 @@ public class Main{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if(speedSlider.getValue() >= 0)
+				if(speedSlider.getValue() > 0)
 				speedSlider.setValue(speedSlider.getValue()-1);
 				
 			}
@@ -190,7 +190,7 @@ public class Main{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if(angleSlider.getValue() == 0){
+				if(angleSlider.getValue() <= 0){
 				angleSlider.setValue(MAX_ANGLE);
 				}
 				angleSlider.setValue(angleSlider.getValue()-10);
@@ -202,7 +202,7 @@ public class Main{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if(angleSlider.getValue() > MAX_ANGLE){
+				if(angleSlider.getValue() >= MAX_ANGLE){
 				angleSlider.setValue(0);
 				}
 				angleSlider.setValue(angleSlider.getValue()+10);
@@ -319,7 +319,7 @@ public class Main{
     				//If ACTION_FLAG is even it means that we clicked 1  or  2*n+1 times then Start option needs to be showed
     				ROTATION_TYPE=0;
     				REFRESH_RATE_2=20;
-    				if(ACTION_FLAG/2 == (int)((ACTION_FLAG/2))){
+    				if(ACTION_FLAG % 2 == 0){
     					
     					modelRotationTimer.start();
     					select_rectangle.setEnabled(false);
@@ -335,7 +335,7 @@ public class Main{
     					select_rectangle.setEnabled(true);
     				}
 
-    				ACTION_FLAG+=1;
+    				ACTION_FLAG++;
     				
     			}
     		});
@@ -348,7 +348,7 @@ public class Main{
 					//If ACTION_FLAG is even it means that we clicked 1  or  2*n+1 times then Start option needs to be showed
 					ROTATION_TYPE=1;
 					REFRESH_RATE_2=500;
-    				if(ACTION_FLAG/2 == (int)((ACTION_FLAG/2))){
+					if(ACTION_FLAG % 2 == 0){
     					
     					modelRotationTimer.start();
     					select_circle.setEnabled(false);
@@ -364,7 +364,7 @@ public class Main{
     					select_circle.setEnabled(true);
     				}
 
-    				ACTION_FLAG+=1;
+    				ACTION_FLAG++;
 					
 				}
 			});
