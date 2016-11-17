@@ -14,30 +14,29 @@ import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
 public class BoatPanel extends JPanel {
-	float V_LINE_OFFSET=0;
-	float H_LINE_OFFSET = 0;
-	float N_VLINES=4;
-	float N_HLINES = 4;
-	double ANGLE_DEG=Main.MAX_ANGLE/2;
-	double ANGLE_RAD = 0;
+
+	private float V_LINE_OFFSET=0;
+	private float H_LINE_OFFSET = 0;
+	private float N_VLINES=4;
+	private float N_HLINES = 4;
 	
-	double IMG_RESIZE_X=0.1;
-	double IMG_RESIZE_Y=0.1;
+	private double ANGLE_DEG= Simulator.MAX_ANGLE/2;
+	private double ANGLE_RAD = 0;
+	private double IMG_RESIZE_X=0.1;
+	private double IMG_RESIZE_Y=0.1;
 	
-	float h=0;
-	float v=0;
-	BufferedImage image;
+	private float h=0;
+	private float v=0;
+	private BufferedImage image;
 	
 	public BoatPanel() {
 		try {
 			image = ImageIO.read(new File("plane-512.png"));
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-
-
+	
 	public void paint(Graphics g) {
         super.paint(g);  
         Graphics2D g2 = (Graphics2D) g;
@@ -93,6 +92,19 @@ public class BoatPanel extends JPanel {
         	g2.drawImage(op.filter(image, null) , image_x,image_y,null);
         			
     }
+	
+	
+	public void setH(float h){
+		this.h = h;
+	}
+	
+	public void setV(float v){
+		this.v = v;
+	}
+	
+	public void setAngleDeg(double angleDeg){
+		this.ANGLE_DEG = angleDeg;
+	}
 }
 
 
