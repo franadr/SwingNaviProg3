@@ -20,7 +20,7 @@ public class BoatPanel extends JPanel {
 	private float N_VLINES=4;
 	private float N_HLINES = 4;
 	
-	private double ANGLE_DEG= Simulator.MAX_ANGLE/2;
+	private double ANGLE_DEG= CmdPanel.MAX_ANGLE/2;
 	private double ANGLE_RAD = 0;
 	private double IMG_RESIZE_X=0.1;
 	private double IMG_RESIZE_Y=0.1;
