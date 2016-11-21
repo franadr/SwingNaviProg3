@@ -1,5 +1,12 @@
 package lu.uni.programming3.SwingNavigator;
-
+/*Created by :
+ * Adriano FRANCI
+ * Zhi Kin MOK
+ * Calors De Sa MATOS
+ * 
+ * For the purpose of Programming 3 project 2016
+ * 
+ */
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -47,7 +54,7 @@ public class CmdPanel extends JPanel {
 				JTextField angleField = new JTextField(Integer.toString(MAX_ANGLE / 2));
 				angleField.setPreferredSize(new Dimension(100, 20));
 				angleField.setMaximumSize(new Dimension(100, 20));
-				angleField.setFocusable(false);
+//				angleField.setFocusable(false);
 		angleIn.add(angle);
 		angleIn.add(angleField);
 
@@ -57,7 +64,7 @@ public class CmdPanel extends JPanel {
 				JLabel speed = new JLabel("Speed input");
 			// TextField
 				JTextField speedField = new JTextField(Integer.toString(BOAT_SPEED));
-				speedField.setFocusable(false);
+//				speedField.setFocusable(false);
 				speedField.setPreferredSize(new Dimension(100, 20));
 				speedField.setMaximumSize(new Dimension(100, 20));
 		speedIn.add(speed);
@@ -110,6 +117,7 @@ public class CmdPanel extends JPanel {
 		
 		//Credit button
 		JButton credits_button = new JButton("Show credits");
+		credits_button.setFocusable(false);
 		
 		
 		// cmdPanel Build
@@ -120,6 +128,7 @@ public class CmdPanel extends JPanel {
 		this.add(angle_string);
 		this.add(angleSlider);
 		this.add(credits_button);
+		
 		this.setFocusable(true);
 		
 		
@@ -206,6 +215,27 @@ public class CmdPanel extends JPanel {
 			}
 		});
 		repaintGridTimer.start();
+		
+		angleField.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				angleSlider.setValue(Integer.parseInt(angleField.getText()));
+			
+			requestFocus(true);	
+			}
+		});
+		
+		speedField.addActionListener(new  ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				speedSlider.setValue(Integer.parseInt(speedField.getText()));
+				
+				requestFocus(true);
+				
+			}
+		});
 
 		Timer autoRotationTimer = new Timer((int) REFRESH_RATE_AUTO_ROTATION, new ActionListener() {
 			@Override
