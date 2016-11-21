@@ -9,7 +9,7 @@ import javax.swing.WindowConstants;
 public class Simulator {
 	private int WINDOWS_SIZE_WIDTH=1000;
 	private int WINDOWS_SIZE_HEIGHT=600;
-
+	static JFrame mainFrame;
 	
 	public Simulator(){
 		
@@ -17,7 +17,7 @@ public class Simulator {
 	
 	public void CreatAndShowMainLayout(){
 		
-    JFrame mainFrame = new JFrame("Navigator");
+    mainFrame = new JFrame("Navigator");
     mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         //LEFT SIDE

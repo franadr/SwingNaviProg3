@@ -13,11 +13,13 @@ import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JSlider;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
+import javax.swing.SwingConstants;
 import javax.swing.Timer;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -74,10 +76,16 @@ public class CmdPanel extends JPanel {
 						speedProgressBar.setPreferredSize(new Dimension(50, 200));
 						speedProgressBar.setValue(BOAT_SPEED);
 					// Warning Icon
-						ImageIcon warning = new ImageIcon(new ImageIcon("warning.png").getImage().getScaledInstance(90, 70, Image.SCALE_DEFAULT));
+						ImageIcon warning = new ImageIcon(new ImageIcon("warning.png").getImage().getScaledInstance(80, 70, Image.SCALE_DEFAULT));
 						JLabel warningLabel = new JLabel();
 						warningLabel.setIcon(warning);
 						warningLabel.setVisible(false);
+						
+					//speed label
+						JLabel speed_string = new JLabel();
+						speed_string.setText("<HTML>S<br>P<br>E<br>E<br>D</HTML>");
+						
+			speedFlowLayout.add(speed_string);
 			speedFlowLayout.add(speedSlider);
 			speedFlowLayout.add(speedProgressBar);
 			speedFlowLayout.add(warningLabel);
@@ -96,13 +104,22 @@ public class CmdPanel extends JPanel {
 		// Angle Slider
 		JSlider angleSlider = new JSlider(0, MAX_ANGLE, MAX_ANGLE / 2);
 		angleSlider.setFocusable(false); // Set to false so that it doesn't mess up with the main key bindings
-
+		
+		//Angle string
+		JLabel angle_string = new JLabel("ANGLE");
+		
+		//Credit button
+		JButton credits_button = new JButton("Show credits");
+		
+		
 		// cmdPanel Build
 		this.add(speedIn);
 		this.add(angleIn);
 		this.add(speedIndicatorPanel);
 		this.add(specialFeaturesPanel);
+		this.add(angle_string);
 		this.add(angleSlider);
+		this.add(credits_button);
 		this.setFocusable(true);
 		
 		
@@ -226,6 +243,7 @@ public class CmdPanel extends JPanel {
 					AUTO_ROTATION_ANGLE = angleSlider.getValue();
 					isActivated = false;
 				}
+				
 
 				else {
 					autoRotationTimer.stop();
@@ -251,7 +269,7 @@ public class CmdPanel extends JPanel {
 					select_circle.setEnabled(false);
 					angleField.setEnabled(false);
 					AUTO_ROTATION_ANGLE = angleSlider.getValue();
-					isActivated = false;
+					
 				}
 
 				else {
@@ -259,8 +277,19 @@ public class CmdPanel extends JPanel {
 					select_rectangle.setText("Auto Rectangles");
 					angleField.setEnabled(true);
 					select_circle.setEnabled(true);
-					isActivated = true;
+					
 				}
+				
+				isActivated = !isActivated;
+			}
+		});
+		
+		credits_button.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JOptionPane.showMessageDialog(Simulator.mainFrame, new String("<HTML><h3>Coded by :</h3> Adriano FRANCI <br> Zhi Kin Mok <br> Carlos De Sa Matos <br><br> In the purpose of Programming 3 Project 2016</HTML>"));
+				
 			}
 		});
 
