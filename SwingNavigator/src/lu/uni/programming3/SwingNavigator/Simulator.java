@@ -2,8 +2,14 @@ package lu.uni.programming3.SwingNavigator;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
 
 public class Simulator {
@@ -26,6 +32,36 @@ public class Simulator {
         
         //RIGHT SIDE
         CmdPanel cmdPanel = new CmdPanel(boatPanel);
+        
+        JMenuBar mb = new JMenuBar();
+        JMenu menu = new JMenu("File");
+        JMenuItem mi1 = new JMenuItem("Help");
+        mi1.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				JOptionPane.showMessageDialog(null, "Use Up-Key and Down-Key to increase/decrease Speed \nUse Left-Key and Right-Key to increase/decrease Angle");
+			}
+        	
+        });
+        
+        JMenuItem mi2 = new JMenuItem("Exit");
+        mi2.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				System.exit(0);
+				
+			}
+        	
+        });
+        
+        menu.add(mi1);
+        menu.add(mi2);
+        mb.add(menu);
+        mainFrame.setJMenuBar(mb);
         
         
     mainFrame.add(boatPanel, BorderLayout.CENTER);
