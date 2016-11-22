@@ -1,8 +1,8 @@
 package lu.uni.programming3.SwingNavigator;
 /*Created by :
- * Adriano FRANCI
- * Zhi Kin MOK
- * Calors De Sa MATOS
+ * Adriano FRANCI : 011109344A
+ * Zhi Kin MOK : 0150096140
+ * Carlos De Sa MATOS : 0160543949
  * 
  * For the purpose of Programming 3 project 2016
  * 
